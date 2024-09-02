@@ -1,12 +1,18 @@
 package vn.edu.usth.weather;
 
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,8 +66,18 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         // return inflater.inflate(R.layout.fragment_forecast, container, false);
-        View view = inflater.inflate(R.layout.fragment_forecast, container, false);
-        view.setBackgroundColor(0xFFFF0000);
-        return view;
+        // View view = inflater.inflate(R.layout.fragment_forecast, container, false);
+        // view.setBackgroundColor(0xFFFF0000);
+        LinearLayout ll = new LinearLayout(getContext());
+        TextView tv = new TextView(getContext());
+        ImageView iv = new ImageView(getContext());
+        iv.setImageResource(R.drawable.storm);
+
+        tv.setText("Thursday");
+
+        ll.addView(tv);
+        ll.addView(iv);
+
+        return ll;
     }
 }

@@ -1,5 +1,8 @@
 package vn.edu.usth.weather;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
+import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -64,13 +67,44 @@ public class ForecastFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        int[] days = {R.string.monday, R.string.tuesday, R.string.wednesday, R.string.thursday, R.string.friday, R.string.saturday, R.string.sunday, R.string.monday, R.string.tuesday, R.string.wednesday};
+        int[] weatherStatuses = {R.string.partly_cloudy, R.string.showers, R.string.rain, R.string.scattered_showers, R.string.mostly_cloudy, R.string.partly_cloudy, R.string.thunderstorms, R.string.scattered_thunderstorms, R.string.showers, R.string.scattered_thunderstorms};
+        int[] weatherIcons = {R.drawable.cloudy_sunny, R.drawable.showers, R.drawable.showers, R.drawable.cloudy_sunny_rainy, R.drawable.cloudy_sunny, R.drawable.cloudy_sunny, R.drawable.storm, R.drawable.cloudy_sunny_rainy, R.drawable.showers, R.drawable.cloudy_sunny_rainy};
+        String[] temperatures = {"24C - 31C", "24C - 30C", "22C - 23C", "22C - 27C", "22C - 30C", "24C - 31C", "25C - 28C", "24C - 27C", "24C - 26C", "23C - 27C"};
+
+        View view = inflater.inflate(R.layout.fragment_forecast, container, false);
+        LinearLayout parentContainer = view.findViewById(R.id.weather_container);
+
+        for(int i = 0; i < days.length; i++){
+            LinearLayout weatherForecastItem = createWeatherForecast();
+            TextView tvDay = weatherForecastItem.findViewById(R.id.day);
+            tvDay.setText(days[i]);
+
+            ImageView iv = weatherForecastItem.findViewById(R.id.weather_icon);
+            iv.setImageResource(weatherIcons[i]);
+
+            TextView tvStatus = weatherForecastItem.findViewById(R.id.weather_status);
+            tvStatus.setText(weatherStatuses[i]);
+
+            TextView temperature = weatherForecastItem.findViewById(R.id.temperature);
+            temperature.setText(temperatures[i]);
+
+            parentContainer.addView(weatherForecastItem);
+        }
+
         // Inflate the layout for this fragment
-        // return inflater.inflate(R.layout.fragment_forecast, container, false);
-        // View view = inflater.inflate(R.layout.fragment_forecast, container, false);
-        // view.setBackgroundColor(0xFFFF0000);
-        LinearLayout ll = new LinearLayout(getContext());
+        return view;
+
+        /**LinearLayout ll = new LinearLayout(getContext());
+        ll.setOrientation(LinearLayout.VERTICAL);
         TextView tv = new TextView(getContext());
         ImageView iv = new ImageView(getContext());
+
+        ViewGroup.LayoutParams llParams = ll.getLayoutParams();
+        llParams.width = MATCH_PARENT;
+        llParams.height = MATCH_PARENT;
+        ll.setLayoutParams(llParams);
+
         iv.setImageResource(R.drawable.storm);
 
         tv.setText("Thursday");
@@ -78,6 +112,11 @@ public class ForecastFragment extends Fragment {
         ll.addView(tv);
         ll.addView(iv);
 
-        return ll;
+        return ll;*/
+    }
+
+    public LinearLayout createWeatherForecast(){
+        LinearLayout weatherForecast = new LinearLayout(getContext());
+        return (LinearLayout) getLayoutInflater().inflate(R.layout.weather_piece, weatherForecast);
     }
 }

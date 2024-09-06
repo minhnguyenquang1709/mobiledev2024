@@ -17,6 +17,7 @@ public class WeatherActivity extends AppCompatActivity {
     private final String tag = "Weather";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(androidx.appcompat.R.style.Theme_AppCompat_DayNight);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_weather);
@@ -25,6 +26,9 @@ public class WeatherActivity extends AppCompatActivity {
 
         // Add the fragment to the 'container' FrameLayout
         getSupportFragmentManager().beginTransaction().add(R.id.main, forecastFragment).commit();
+
+        // change bar color
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

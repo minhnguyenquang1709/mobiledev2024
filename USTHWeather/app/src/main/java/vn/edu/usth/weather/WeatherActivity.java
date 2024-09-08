@@ -17,7 +17,7 @@ public class WeatherActivity extends AppCompatActivity {
     private final String tag = "Weather";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(androidx.appcompat.R.style.Theme_AppCompat_DayNight);
+        // setTheme(androidx.appcompat.R.style.Theme_AppCompat_DayNight);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_weather);

@@ -1,7 +1,8 @@
 <resources>
 
-    <style name="Widget.Theme.USTHWeather.MyView" parent="">
-        <item name="android:background">@color/gray_400</item>
-        <item name="exampleColor">@color/light_blue_400</item>
+    <style name="ActivityTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/blue_actionBar</item>
+        <item name="colorPrimaryDark">@color/blue_statusBar</item>
+        <item name="titleTextColor">@color/white</item>
     </style>
 </resources>

@@ -1,12 +1,8 @@
 package vn.edu.usth.weather;
 
-import android.content.pm.ComponentInfo;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
-import androidx.activity.ComponentActivity;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -22,10 +18,10 @@ public class WeatherActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_weather);
 
-        ForecastFragment forecastFragment = new ForecastFragment();
+        // ForecastFragment forecastFragment = new ForecastFragment();
 
         // Add the fragment to the 'container' FrameLayout
-        getSupportFragmentManager().beginTransaction().add(R.id.main, forecastFragment).commit();
+        // getSupportFragmentManager().beginTransaction().add(R.id.mainContainer, forecastFragment).commit();
 
         // change bar color
 

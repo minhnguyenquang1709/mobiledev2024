@@ -17,4 +17,6 @@
     <string name="friday">Fri</string>
     <string name="saturday">Sat</string>
     <string name="sunday">Sun</string>
+    <string name="weather_fragment_status">12C\nCloudy</string>
+    <string name="weather_fragment_location">Paris</string>
 </resources>

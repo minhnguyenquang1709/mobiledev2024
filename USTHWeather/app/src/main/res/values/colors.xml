@@ -13,4 +13,6 @@
     <color name="gray_600">#FF757575</color>
     <color name="blue_actionBar">#3F51B5</color>
     <color name="blue_statusBar">#303F9F</color>
+    <color name="light_green">#CEFFDC</color>
+    <color name="blue_forecast_item">#FFDFDFFF</color>
 </resources>

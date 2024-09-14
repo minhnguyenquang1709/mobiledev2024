@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_fragment_weather_and_forecast">16dp</dimen>
+    <dimen name="size_text_fragment_weather">20sp</dimen>
+    <dimen name="width_img_fragment_weather">250dp</dimen>
+    <dimen name="width_text_fragment_weather">100dp</dimen>
+</resources>

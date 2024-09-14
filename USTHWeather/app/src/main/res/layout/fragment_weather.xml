@@ -9,21 +9,21 @@
         android:text="@string/weather_fragment_status"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:textSize="20sp"/>
+        android:textSize="@dimen/size_text_fragment_weather"/>
 
     <ImageView
-        android:layout_width="250dp"
+        android:layout_width="@dimen/width_img_fragment_weather"
         android:layout_height="wrap_content"
         android:src="@drawable/cloudy"
         android:layout_centerInParent="true"/>
 
     <TextView
-        android:layout_width="100dp"
+        android:layout_width="@dimen/width_text_fragment_weather"
         android:layout_height="wrap_content"
         android:text="@string/weather_fragment_location"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:textAlignment="viewEnd"
-        android:textSize="20sp"/>
+        android:textSize="@dimen/size_text_fragment_weather"/>
 
 </RelativeLayout>

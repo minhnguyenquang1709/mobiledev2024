@@ -1,5 +1,4 @@
 <resources>
-
     <style name="ActivityTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/blue_actionBar</item>
         <item name="colorPrimaryDark">@color/blue_statusBar</item>

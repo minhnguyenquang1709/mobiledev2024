@@ -4,9 +4,15 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -23,6 +29,7 @@ import java.io.OutputStream;
 public class WeatherActivity extends AppCompatActivity {
     private final String tag = "Weather";
     private MediaPlayer mp;
+    private Toolbar appbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // setTheme(androidx.appcompat.R.style.Theme_AppCompat_DayNight);
@@ -30,11 +37,17 @@ public class WeatherActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_weather);
 
+        appbar = findViewById(R.id.toolbar);
+        appbar.setBackgroundColor(getResources().getColor(R.color.blue_actionBar));
+        setSupportActionBar(appbar);
+
+        Toast.makeText(getApplicationContext(), appbar.getTitle(), Toast.LENGTH_SHORT).show();
+
         try {
             InputStream is = getResources().openRawResource(R.raw.erikmusic);
 
             File sdCard = Environment.getExternalStorageDirectory();
-            File musicFile = new File(sdCard, "my_music.mp3");
+            File musicFile = new File(sdCard, "erikmusic.mp3");
 
             OutputStream outputStream = new FileOutputStream(musicFile);
             byte[] buffer = new byte[1024];
@@ -73,7 +86,6 @@ public class WeatherActivity extends AppCompatActivity {
         // getSupportFragmentManager().beginTransaction().add(R.id.mainContainer, forecastFragment).commit();
 
         // change bar color
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -114,5 +126,24 @@ public class WeatherActivity extends AppCompatActivity {
     protected void onDestroy(){
         super.onDestroy();
         Log.i(tag, "destroyed");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_layout, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if(itemId == R.id.action_refresh){
+            Toast.makeText(this, "Refreshing", Toast.LENGTH_SHORT).show();
+            return true;
+        }else if (itemId == R.id.action_settings){
+            Toast.makeText(this, "Settings hehe", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

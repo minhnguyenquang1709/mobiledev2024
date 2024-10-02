@@ -1,5 +1,5 @@
 <resources>
-    <style name="ActivityTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
+    <style name="ActivityTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">@color/blue_actionBar</item>
         <item name="colorPrimaryDark">@color/blue_statusBar</item>
         <item name="titleTextColor">@color/white</item>

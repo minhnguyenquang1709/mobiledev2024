@@ -1,6 +1,8 @@
 package vn.edu.usth.weather;
 
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -9,11 +11,9 @@ import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
@@ -33,13 +33,17 @@ public class WeatherActivity extends AppCompatActivity {
     private final String tag = "Weather";
     private MediaPlayer mp;
     private Toolbar appbar;
-    private  final Handler handler;
+    private final Handler handler;
+    private AsyncTask<String, Integer, Bitmap> task;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // setTheme(androidx.appcompat.R.style.Theme_AppCompat_DayNight);
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_weather);
+        // -----------------------------------------
+
+
 
         appbar = findViewById(R.id.toolbar);
         appbar.setBackgroundColor(getResources().getColor(R.color.blue_actionBar));
@@ -62,8 +66,6 @@ public class WeatherActivity extends AppCompatActivity {
             is.close();
             outputStream.close();
 
-
-
             mp = new MediaPlayer();
             mp.setDataSource(musicFile.getAbsolutePath());
             mp.prepare();
@@ -71,7 +73,6 @@ public class WeatherActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
-
 
         // setup ViewPager
         PagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager());
@@ -152,25 +153,61 @@ public class WeatherActivity extends AppCompatActivity {
         int itemId = item.getItemId();
         if(itemId == R.id.action_refresh){
             // Toast.makeText(this, "Refreshing", Toast.LENGTH_SHORT).show();
-            Thread t = new Thread(new Runnable() {
+//            Thread t = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try{
+//                        Thread.sleep(5000);
+//                    }catch(InterruptedException e){
+//                        e.printStackTrace();
+//                    }
+//                    // simulate receiving data from server
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString(getString(R.string.server_response), "Data from server");
+//
+//                    // notify main thread
+//                    Message msg = new Message();
+//                    msg.setData(bundle);
+//                    handler.sendMessage(msg);
+//                }
+//            });
+//            t.start();
+
+            task = new AsyncTask<String, Integer, Bitmap>(){
                 @Override
-                public void run() {
-                    try{
-                        Thread.sleep(5000);
-                    }catch(InterruptedException e){
+                protected void onPreExecute(){
+                    // nothing
+                }
+
+                @Override
+                protected Bitmap doInBackground(String... strings) {
+                    // called by background thread
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    // simulate receiving data from server
-                    Bundle bundle = new Bundle();
-                    bundle.putString(getString(R.string.server_response), "Data from server");
-
-                    // notify main thread
-                    Message msg = new Message();
-                    msg.setData(bundle);
-                    handler.sendMessage(msg);
+                    return null;
                 }
-            });
-            t.start();
+
+                @Override
+                protected void onProgressUpdate(Integer... values) {
+                    // This method is called in the main thread, so it's possible
+                    // to update UI to reflect the worker thread progress here.
+
+                    // update progress bar
+
+                }
+
+                @Override
+                protected void onPostExecute(Bitmap result){
+                    // called in the main thread, after doInBackground()
+                    if (result == null){
+                        Toast.makeText(getApplicationContext(), "data received", Toast.LENGTH_LONG).show();
+                    }
+                }
+            };
+            task.execute("http://ict.usth.edu.vn/wp-content/uploads/usth/usthlogo.png");
 
             return true;
         }else if (itemId == R.id.action_settings){

@@ -20,4 +20,6 @@
     <string name="weather_fragment_status">12C\nCloudy</string>
     <string name="weather_fragment_location">Paris</string>
     <string name="cloudy">Cloudy</string>
+
+    <string name="server_response" translatable="false">server_response</string>
 </resources>

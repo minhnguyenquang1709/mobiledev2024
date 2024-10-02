@@ -3,6 +3,9 @@ package vn.edu.usth.weather;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +33,7 @@ public class WeatherActivity extends AppCompatActivity {
     private final String tag = "Weather";
     private MediaPlayer mp;
     private Toolbar appbar;
+    private  final Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // setTheme(androidx.appcompat.R.style.Theme_AppCompat_DayNight);
@@ -69,7 +73,6 @@ public class WeatherActivity extends AppCompatActivity {
         }
 
 
-
         // setup ViewPager
         PagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager());
         ViewPager pager = (ViewPager) findViewById(R.id.myViewPager);
@@ -96,6 +99,16 @@ public class WeatherActivity extends AppCompatActivity {
 
     public WeatherActivity(){
         super();
+        handler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(Message msg){
+                if (msg != null){
+                    Log.i("Handler", msg.toString());
+                    Toast.makeText( getApplicationContext(),msg.getData().getString(getString(R.string.server_response)), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        };
     }
 
     @Override
@@ -138,7 +151,27 @@ public class WeatherActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if(itemId == R.id.action_refresh){
-            Toast.makeText(this, "Refreshing", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Refreshing", Toast.LENGTH_SHORT).show();
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Thread.sleep(5000);
+                    }catch(InterruptedException e){
+                        e.printStackTrace();
+                    }
+                    // simulate receiving data from server
+                    Bundle bundle = new Bundle();
+                    bundle.putString(getString(R.string.server_response), "Data from server");
+
+                    // notify main thread
+                    Message msg = new Message();
+                    msg.setData(bundle);
+                    handler.sendMessage(msg);
+                }
+            });
+            t.start();
+
             return true;
         }else if (itemId == R.id.action_settings){
             Toast.makeText(this, "Settings hehe", Toast.LENGTH_SHORT).show();

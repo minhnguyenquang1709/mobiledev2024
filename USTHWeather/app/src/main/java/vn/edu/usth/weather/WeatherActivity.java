@@ -24,12 +24,15 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -38,7 +41,7 @@ public class WeatherActivity extends AppCompatActivity {
     private MediaPlayer mp;
     private Toolbar appbar;
     private final Handler handler;
-    private AsyncTask<String, Integer, Bitmap> task;
+    private RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +91,7 @@ public class WeatherActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab);
         tabLayout.setupWithViewPager(pager);
 
-        // ForecastFragment forecastFragment = new ForecastFragment();
-
-        // Add the fragment to the 'container' FrameLayout
-        // getSupportFragmentManager().beginTransaction().add(R.id.mainContainer, forecastFragment).commit();
+        requestQueue = Volley.newRequestQueue(this);
 
         // change bar color
 
@@ -188,63 +188,7 @@ public class WeatherActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**private class MyAsyncTask extends AsyncTask<String, Integer, Bitmap> {
-        @Override
-        protected void onPreExecute(){
-            // nothing
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... strings) {
-            // called by background thread
-            try {
-                Log.i("AsyncTask", "Started doing in background");
-                // Thread.sleep(2000);
-
-                // initialize URL
-                URL url = new URL(strings[0]);
-
-                // make a request to server
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setDoInput(true);
-
-                // allow reading response code and response data connection
-                connection.connect();
-
-                // receive response
-                int response = connection.getResponseCode();
-                Log.i("AsyncTask", "The response code is " + response);
-                InputStream is = connection.getInputStream();
-
-                // process image response
-                Bitmap bitmap = BitmapFactory.decodeStream(is);
-                ImageView logo = (ImageView) findViewById(R.id.logo);
-                logo.setImageBitmap(bitmap);
-
-                connection.disconnect();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            // This method is called in the main thread, so it's possible
-            // to update UI to reflect the worker thread progress here.
-
-            // update progress bar
-
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result){
-            // called in the main thread, after doInBackground()
-            if (result == null){
-                Toast.makeText(getApplicationContext(), "data received", Toast.LENGTH_LONG).show();
-            }
-        }
-    }*/
+    public RequestQueue getRequestQueue() {
+        return requestQueue;
+    }
 }

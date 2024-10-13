@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -22,6 +23,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.ImageRequest;
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -34,7 +39,7 @@ import javax.net.ssl.HttpsURLConnection;
  * create an instance of this fragment.
  */
 public class ForecastFragment extends Fragment {
-    private AsyncTask<String, Integer, Bitmap> task;
+    private RequestQueue requestQueue;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -87,8 +92,23 @@ public class ForecastFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_forecast, container, false);
         LinearLayout parentContainer = view.findViewById(R.id.weather_container);
 
-        task = new MyAsyncTask();
-        task.execute("https://usth.edu.vn/wp-content/uploads/2021/11/logo.png");
+        WeatherActivity weatherActivity = (WeatherActivity) getActivity();
+        if(weatherActivity != null){
+            requestQueue = weatherActivity.getRequestQueue();
+        }
+
+        // create listener
+        Response.Listener<Bitmap> listener = new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap response) {
+                ImageView iv = view.findViewById(R.id.logo);
+                iv.setImageBitmap(response);
+            }
+        };
+
+        // create request with listener
+        ImageRequest imageRequest = new ImageRequest("https://usth.edu.vn/wp-content/uploads/2021/11/logo.png", listener, 0, 0, ImageView.ScaleType.CENTER, Bitmap.Config.ARGB_8888, null);
+        requestQueue.add(imageRequest);
 
         for(int i = 0; i < days.length; i++){
             LinearLayout weatherForecastItem = createWeatherForecast();
@@ -138,71 +158,5 @@ public class ForecastFragment extends Fragment {
         return (LinearLayout) getLayoutInflater().inflate(R.layout.weather_piece, weatherForecast);
     }
 
-    private class MyAsyncTask extends AsyncTask<String, Integer, Bitmap> {
-        @Override
-        protected void onPreExecute(){
-            // nothing
-        }
 
-        @Override
-        protected Bitmap doInBackground(String... strings) {
-            // called by background thread
-            Bitmap bitmap = null;
-            try {
-                Log.i("AsyncTask", "Started doing in background");
-                // Thread.sleep(2000);
-
-                // initialize URL
-                URL url = new URL(strings[0]);
-
-                // make a request to server
-                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setDoInput(true);
-
-                // allow reading response code and response data connection
-                connection.connect();
-
-                // receive response
-                int response = connection.getResponseCode();
-                Log.i("AsyncTask", "The response code is " + response);
-                InputStream is = connection.getInputStream();
-
-                // process image response
-                bitmap = BitmapFactory.decodeStream(is);
-
-                connection.disconnect();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            // This method is called in the main thread, so it's possible
-            // to update UI to reflect the worker thread progress here.
-
-            // update progress bar
-
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result){
-            // called in the main thread, after doInBackground()
-            try {
-                if (result != null){
-                    ImageView logo = getView().findViewById(R.id.logo);
-                    logo.setImageBitmap(result);
-                    Toast.makeText(getContext(), "data received", Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(getContext(), "cannot receive data", Toast.LENGTH_LONG).show();
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-        }
-    }
 }
